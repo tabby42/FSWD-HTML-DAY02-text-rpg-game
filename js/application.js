@@ -3,19 +3,102 @@ var $j = jQuery.noConflict();
 $j(document).ready(function() {
 	"use strict";
 
-//DOM elements
+    //variables for accessing DOM elements
     var help = $j("#help");
     var placeholder = $j("#placeholder");
     var strength = $j("#strength");
     var hunger = $j("#hunger");
 
-    var room2 = {
-        items: [],
-        availableRooms: [
+    //room constructor
+    function Room(items, monsters, availableRooms) {
+        this.items = items;
+        this.monsters = monsters;
+        this.availableRooms = availableRooms;
+    }
+    //create rooms
+    var room2 = new Room(
+        [],
+        [],
+        [
             [1, "w", false], 
             [3, "e", false]
         ]
-    }
+    );
+
+    var room1 = new Room(
+        ["sword"],
+        [],
+        [
+            [2, "e", false], 
+            [4, "s", false]
+        ]
+    );
+
+    var room3 = new Room(
+        [],
+        ["hellhound"],
+        [
+            [2, "w", false], 
+            [6, "s", false]
+        ]
+    );
+
+    var room4 = new Room(
+        ["food"],
+        ["hellhound"],
+        [
+            [1, "n", false], 
+            [7, "s", false]
+        ]
+    );
+
+     var room5 = new Room(
+        ["dragon"],
+        ["king"],
+        [
+            [8, "s", false]
+        ]
+    );
+
+    var room6 = new Room(
+        ["food"],
+        [],
+        [
+            [3, "n", false],
+            [9, "s", false]
+        ]
+    );
+
+    var room7 = new Room(
+        ["ring"],
+        [],
+        [
+            [4, "n", false],
+            [8, "e", false]
+        ]
+    );
+
+    var room8 = new Room(
+        ["armor"],
+        [],
+        [
+            [5, "n", false],
+            [7, "w", false],
+            [9, "e", false]
+        ]
+    );
+
+    var room9 = new Room(
+        ["key"],
+        [],
+        [
+            [6, "n", false],
+            [8, "w", false]
+        ]
+    );
+    //put all the rooms in an array
+    var rooms = [room1, room2, room3, room4, room5, room6, room7, room8, room9];
+
 
     var player = {
         inventory: [],
@@ -23,15 +106,18 @@ $j(document).ready(function() {
         hunger: 0,
         currentRoom: room2,
         goToRoom: function(direction) {
-            console.log(direction);
+            //console.log(direction);
             var availableRooms = this.currentRoom.availableRooms;
             var isAccessible  = false;
             for (var i = 0; i < availableRooms.length; i++) {
                 if (availableRooms[i][1] == direction) {
                     this.strength --;
                     this.hunger ++;
+                    this.currentRoom = rooms[availableRooms[i][0] - 1];
+                    //console.log(this.currentRoom);
                     isAccessible = true;
                     insertMessage("There is a door. It opens. You enter Room" + availableRooms[i][0] + ".");
+                    //call describeCurrentRoom
                 }
             }
             if (!isAccessible) {
@@ -44,12 +130,18 @@ $j(document).ready(function() {
         adjustStatus: function() {
             strength.empty().append(this.strength);
             hunger.empty().append(this.hunger);
-            if (hunger > 10) {
-                insertMessage("You die from hunger! Game over!");
+            if (this.hunger > 10) {
+                alert("You die from hunger! Game over!");
+                insertMessage("Reload page to start over.");
                  $j("form").hide();
             }
-            else if (hunger > 5) {
-                insertMessage("You are going to need food soon");
+            else if (this.hunger == 5) {
+                hunger.css("color", "red");
+            }
+            if (this.strength <= 0) {
+                alert("You die from exhaustion! Game over!");
+                insertMessage("Reload page to start over.");
+                $j("form").hide();
             }
         }
          //showInventory
