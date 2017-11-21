@@ -13,12 +13,12 @@ $j(document).ready(function() {
     var evilKing, hellhound, poisonousBat;
     //DOM elements
     var help = $j("#help");
-    
+
     //hide help section initially
     help.hide();
 
     //TODO: functions for:
-    //pickUp, eat, showInventory, useSpell, goToRoom, useKey, fight
+    //insertMessage, pickUp, eat, showInventory, useSpell, goToRoom, useKey, fight, checkHunger, checkStrength
 
     $j("form").submit(function () {
         console.log('submitted');
