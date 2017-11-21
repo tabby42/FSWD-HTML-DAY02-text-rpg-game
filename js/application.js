@@ -1,3 +1,15 @@
+var room2 = {
+    "items": [],
+    "availableRooms": [
+        [1, "w", false], 
+        [3, "e", false]
+    ]
+}
+
+
+
+
+
 var $j = jQuery.noConflict();
 
 $j(document).ready(function() {
@@ -5,12 +17,11 @@ $j(document).ready(function() {
     //status
     var strength = 10;
     var hunger = 0;
-    var stepsTaken = 0;
-    var currentRoom = "hallway";
+    var currentRoom = "room2";
     //items
     var sword, food, ring, armor, key = false;
     //monsters
-    var evilKing, hellhound, poisonousBat;
+    var evilKing, hellhound;
     //DOM elements
     var help = $j("#help");
 
@@ -18,7 +29,7 @@ $j(document).ready(function() {
     help.hide();
 
     //TODO: functions for:
-    //insertMessage, pickUp, eat, showInventory, useSpell, goToRoom, useKey, fight, checkHunger, checkStrength
+    //insertMessage, pickUp, eat, showInventory, useSpell, goToRoom(direction), useKey, fight(monster), checkHunger, checkStrength
 
     $j("form").submit(function () {
         console.log('submitted');
