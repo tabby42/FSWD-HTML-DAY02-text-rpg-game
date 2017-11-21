@@ -118,6 +118,7 @@ $j(document).ready(function() {
                     isAccessible = true;
                     insertMessage("There is a door. It opens. You enter Room" + availableRooms[i][0] + ".");
                     //call describeCurrentRoom
+                    this.describeCurrentRoom();
                 }
             }
             if (!isAccessible) {
@@ -143,52 +144,61 @@ $j(document).ready(function() {
                 insertMessage("Reload page to start over.");
                 $j("form").hide();
             }
+        },
+        describeCurrentRoom: function () {
+            if (this.currentRoom.items.length > 0) {
+                for (var i = 0; i < this.currentRoom.items.length; i++) {
+                    appendMessage(" There is a " + this.currentRoom.items[i] + ".");
+                }
+            }
+            if (this.currentRoom.monsters.length > 0) {
+                for (var i = 0; i < this.currentRoom.monsters.length; i++) {
+                    appendMessage(" There is a " + this.currentRoom.monsters[i] + ".");
+                }
+            }
         }
-         //showInventory
-        
+        //showInventory
         //pickUp(item)
         //fight(monster)
         //useSpell()
         //useKey()
         //eat()
-        // describeCurrentRoom: function () {
-
-        // },
+    
     }
 
-
     function insertMessage(message) {
-        //console.log(message);
         placeholder.empty();
         placeholder.append(message);
     }
-    //items
-    var sword, food, ring, armor, key;
-    //monsters
-    var evilKing, hellhound;
+
+    function appendMessage(message) {
+        placeholder.append(message);
+    }
     
     //hide help section initially
     help.hide();
     //initial player status
     player.adjustStatus();
 
-    //TODO: functions for:
-    //insertMessage, checkHunger, checkStrength
-
+    //handle user input
     $j("form").submit(function () {
-        console.log('submitted');
+        //console.log('submitted');
         var input = $j("#user-input").val();
 
         if (input == "help") {
             help.show();
         }
+        else if (input == "-h") {
+            help.hide();
+        }
         else if (input == "n" || input == "s" || input=="w" || input =="e") {
             player.goToRoom(input);
         }
+        else {
+            insertMessage("I don't know what you mean by " + input + ".");
+        }
 
         $j("#user-input").val("");
-
-
     });
 
 });
