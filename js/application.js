@@ -105,6 +105,7 @@ $j(document).ready(function() {
         strength: 10,
         hunger: 0,
         currentRoom: room2,
+        kingIsDead: false,
         goToRoom: function(direction) {
             //console.log(direction);
             var availableRooms = this.currentRoom.availableRooms;
@@ -166,11 +167,24 @@ $j(document).ready(function() {
                     var temp = this.currentRoom.items[i];
                     this.currentRoom.items.pop();
                     //console.log(this.currentRoom.items);
-                    this.inventory.push(temp);
                     if (temp == "sword") {
                         this.strength += 20;
+                        this.inventory.push(temp);
+                        appendMessage("<p>You picked up a " + temp + ".</p>");
+                    } else if (temp == "food") {
+                        this.hunger -=5;
+                        appendMessage("<p>You picked up a " + temp + ".</p>");
+                    } else if (temp == "armor" || temp == "ring" || temp == "key") {
+                        this.strength += 5;
+                        this.inventory.push(temp);
+                        appendMessage("<p>You picked up a " + temp + ".</p>");
                     }
-                    appendMessage("<p>You picked up a " + temp + ".</p>");
+                    else if (temp == "dragon" && kingIsDead == true) {
+                        appendMessage("You are a hero! You saved the dragon from the evil king!");
+                    }
+                    else if (temp == "dragon" && kingIsDead == true) {
+                        appendMessage("You have to kill the king first in order to pick up the dragon!");
+                    }
                 }
                 //update status
                 this.adjustStatus();
@@ -189,11 +203,13 @@ $j(document).ready(function() {
             else {
                 appendMessage("Your inventory is empty.");
             }
+        },
+        fight: function () {
+
         }
         //fight(monster)
         //useSpell()
         //useKey()
-        //eat()
     
     }
 
