@@ -179,10 +179,10 @@ $j(document).ready(function() {
                         this.inventory.push(temp);
                         appendMessage("<p>You picked up a " + temp + ".</p>");
                     }
-                    else if (temp == "dragon" && kingIsDead == true) {
+                    else if (temp == "dragon" && this.kingIsDead == true) {
                         appendMessage("You are a hero! You saved the dragon from the evil king!");
                     }
-                    else if (temp == "dragon" && kingIsDead == true) {
+                    else if (temp == "dragon" && this.kingIsDead == true) {
                         appendMessage("You have to kill the king first in order to pick up the dragon!");
                     }
                 }
@@ -198,16 +198,41 @@ $j(document).ready(function() {
                 for (var i = 0; i < this.inventory.length; i++) {
                     basket += this.inventory[i] + "<br>";
                 }
-                appendMessage("Your inventory:<br>" + basket);
+                appendMessage("<br>Your inventory:<br>" + basket);
             }
             else {
-                appendMessage("Your inventory is empty.");
+                appendMessage("<br>Your inventory is empty.");
             }
         },
         fight: function () {
-
+            //check if there is a monster in this room
+            //not yet handled --> more than one monster per room
+            if (this.currentRoom.monsters.length > 0) {
+                for (var i = 0; i < this.currentRoom.monsters.length; i++) {
+                    if (this.currentRoom.monsters[i] == "king") {
+                        this.strength -= 40;
+                        this.adjustStatus();
+                        if (this.strength > 0) {
+                            this.kingIsDead = true;
+                            appendMessage("The King is dead!");
+                        }
+                        // else {
+                        //     alert("You die! Game over!");
+                        //     insertMessage("Reload page to start over.<br>");
+                        //     $j("form").hide();
+                        // }
+                    }
+                    else if (this.currentRoom.monsters[i] == "hellhound") {
+                        this.strength -= 5;
+                        this.adjustStatus();
+                        if (this.strength > 0) {
+                            appendMessage("You killed the hellhound");
+                        }
+                        this.currentRoom.monsters.pop();
+                    }
+                }
+            }
         }
-        //fight(monster)
         //useSpell()
         //useKey()
     
@@ -246,6 +271,9 @@ $j(document).ready(function() {
         }
         else if (input =="i") {
             player.showInventory();
+        }
+        else if (input == "f") {
+            player.fight();
         }
         else {
             insertMessage("I don't know what you mean by " + input + ".");
