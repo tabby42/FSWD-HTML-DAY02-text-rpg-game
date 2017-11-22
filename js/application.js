@@ -99,7 +99,7 @@ $j(document).ready(function() {
     //put all the rooms in an array
     var rooms = [room1, room2, room3, room4, room5, room6, room7, room8, room9];
 
-
+    //object for player
     var player = {
         inventory: [],
         strength: 10,
@@ -114,7 +114,6 @@ $j(document).ready(function() {
                     this.strength --;
                     this.hunger ++;
                     this.currentRoom = rooms[availableRooms[i][0] - 1];
-                    //console.log(this.currentRoom);
                     isAccessible = true;
                     insertMessage("There is a door. It opens. You enter Room" + availableRooms[i][0] + ".<br>");
                     //call describeCurrentRoom
@@ -126,6 +125,7 @@ $j(document).ready(function() {
                 this.hunger ++;
                 insertMessage("There is no door in this direction.<br>")
             }
+            //update status
             this.adjustStatus();
         },
         adjustStatus: function() {
@@ -177,9 +177,19 @@ $j(document).ready(function() {
             } else {
                 appendMessage("<p>There is no item to pick up here.</pr>");
             }
+        },
+        showInventory: function () {
+            var basket = "";
+            if (this.inventory.length > 0) {
+                for (var i = 0; i < this.inventory.length; i++) {
+                    basket += this.inventory[i] + "<br>";
+                }
+                appendMessage("Your inventory:<br>" + basket);
+            }
+            else {
+                appendMessage("Your inventory is empty.");
+            }
         }
-        //showInventory
-        //pickUp(item)
         //fight(monster)
         //useSpell()
         //useKey()
@@ -217,6 +227,9 @@ $j(document).ready(function() {
         }
         else if (input == "p") {
             player.pickUp(input);
+        }
+        else if (input =="i") {
+            player.showInventory();
         }
         else {
             insertMessage("I don't know what you mean by " + input + ".");
