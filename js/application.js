@@ -142,7 +142,7 @@ $j(document).ready(function() {
                 hunger.css("color", "red");
             }
             if (this.strength <= 0) {
-                alert("You die from exhaustion! Game over!");
+                alert("Your strength is gone! You die! Game over!");
                 insertMessage("Reload page to start over.<br>");
                 $j("form").hide();
             }
