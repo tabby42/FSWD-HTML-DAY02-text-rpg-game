@@ -102,11 +102,12 @@ $j(document).ready(function() {
     //object for player
     var player = {
         inventory: [],
-        strength: 10,
+        strength: 15,
         hunger: 0,
         currentRoom: room2,
         kingIsDead: false,
         usedMagic: false,
+        ringIsThere: false,
         goToRoom: function(direction) {
             //console.log(direction);
             var availableRooms = this.currentRoom.availableRooms;
@@ -166,30 +167,44 @@ $j(document).ready(function() {
             if (this.currentRoom.items.length > 0) {
                 for (var i = 0; i < this.currentRoom.items.length; i++) {
                     var temp = this.currentRoom.items[i];
-                    this.currentRoom.items.pop();
                     //console.log(this.currentRoom.items);
                     if (temp == "sword") {
                         this.strength += 20;
                         this.inventory.push(temp);
+                        this.currentRoom.items.pop();
                         appendMessage("<p>You picked up a " + temp + ".</p>");
                     } else if (temp == "food") {
                         this.hunger -=5;
+                        this.currentRoom.items.pop();
                         appendMessage("<p>You picked up a " + temp + ".</p>");
-                    } else if (temp == "armor" || temp == "ring" || temp == "key") {
+                    } else if (temp == "armor" || temp == "key") {
                         this.strength += 5;
                         this.inventory.push(temp);
+                        this.currentRoom.items.pop();
                         appendMessage("<p>You picked up a " + temp + ".</p>");
                     }
-                    else if (temp == "dragon" && this.kingIsDead == true && this.usedMagic == true) {
-                        insertMessage("You are a hero! You saved the dragon from the evil king! YOU WON!<br>");
-                        $j("form").hide();
+                    else if ( temp == "ring") {
+                        this.strength += 5;
+                        this.inventory.push(temp);
+                        this.currentRoom.items.pop();
+                        this.ringIsThere = true;
+                        console.log(this.ringIsThere);
+                        appendMessage("<p>You picked up a " + temp + ".</p>");
                     }
-                    else if (temp == "dragon" && this.kingIsDead == false && this.usedMagic == true) {
+                    else if (temp == "dragon" && this.kingIsDead == false && this.ringIsThere == true) {
                         appendMessage("You have to kill the king first in order to pick up the dragon!");
                     }
-                    else if (temp == "dragon" && this.kingIsDead == true && this.usedMagic == false) {
+                    else if (temp == "dragon" && this.kingIsDead == false && this.ringIsThere == false) {
+                        appendMessage("You have to kill the king first in order to pick up the dragon!");
+                    }
+                    else if (temp == "dragon" && this.kingIsDead == true && this.ringIsThere == false) {
                         appendMessage("You have to use magic to free the dragon!");
                     }
+                    else if (temp == "dragon" && this.kingIsDead == true && this.ringIsThere == true && this.usedMagic == true) {
+                        insertMessage("You are a hero! You saved the dragon from the Evil King! YOU WON!<br>");
+                        $j("form").hide();
+                    }
+                    //TODO: handle case when king is dead and ring is there and user tries to pick up dragon without having used the spell 
                 }
                 //update status
                 this.adjustStatus();
@@ -219,40 +234,36 @@ $j(document).ready(function() {
                         this.adjustStatus();
                         if (this.strength > 0) {
                             this.kingIsDead = true;
-                            appendMessage("The King is dead!");
+                            appendMessage(" The King is dead!<br>");
                         }
-                        // else {
-                        //     alert("You die! Game over!");
-                        //     insertMessage("Reload page to start over.<br>");
-                        //     $j("form").hide();
-                        // }
                     }
                     else if (this.currentRoom.monsters[i] == "hellhound") {
                         this.strength -= 5;
                         this.adjustStatus();
                         if (this.strength > 0) {
-                            appendMessage("You killed the hellhound");
+                            appendMessage("You killed the hellhound!");
                         }
                         this.currentRoom.monsters.pop();
                     }
                 }
+            } else {
+                appendMessage("There is no monster in this room.");
             }
         },
         useSpell: function () {
             //check if ring is in inventory and if dragon is in the room
-            var ringIsThere = false;
-            if (this.inventory.length > 0 && this.currentRoom.items[0] == "dragon") {
-                for (var i = 0; i < this.inventory.length; i++) {
-                    if (this.inventory[i] == "ring") {
-                        ringIsThere = true;
-                    } 
-                }
-            }
-            if (!ringIsThere ) {
+            if (!this.ringIsThere ) {
                 appendMessage("You haven't found the magic ring yet.");
-            } else {
+            } else if (this.ringIsThere && this.currentRoom.items[0] !== "dragon") {
+                appendMessage("You can only use the spell when you find the dragon.");
+            }
+            else if ( this.ringIsThere && this.currentRoom.items[0] == "dragon" ) {
+                this.usedMagic = true;
                 appendMessage("You broke the spell! Now you can save the dragon!");
             }
+            console.log(this.ringIsThere);
+            console.log(this.usedMagic);
+
          }
          //TODO: useKey
      }
