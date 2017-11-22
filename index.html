@@ -5,36 +5,43 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Save the Dragon</title>
+		<link href="https://fonts.googleapis.com/css?family=Fredericka+the+Great|Josefin+Slab" rel="stylesheet">
 		<link rel="stylesheet" href="style.css">
 	</head>
 	<body>
-		<div id="msg-board">
-			<div>
-				<h1>Save The Dragon or die!</h1>
-				<p>Welcome! You are in the hallway at the north entrance to the castle. There is no way back.<br>
-				(Type "help" for a list of available commands)</p>
-				<p>Your current strength: <span id="strength"></span></p>
-				<p>Your current hunger level: <span id="hunger"></span></p>
+		<div class="wrapper">
+			<div id="msg-board">
+				<div>
+					<h1>Save the dragon<br>or die a painful death!</h1>
+					<p class="welcome">Welcome! You are in the hallway at the north entrance to the castle. There is no way back.<br> The Evil King has imprisoned the mighty dragon with the help of the Dark Wizard. Your mission is to defeat the King and break the spell that holds the dragon prisoner.
+					</p>
+					<p class="t-center"><em>Good Luck!</em></p>
+					<p class="label t-center m-bottom-small">Your current strength: <span id="strength"></span></p>
+					<p class="label t-center">Your current hunger level: <span id="hunger"></span></p>
+					<p class="t-center">Type <em>help</em> for a list of available commands</p>
+					<div id ="help">
+						<ul>
+							<li><em>-h</em> -- hide help section</li>
+							<li><em>n(orth), s(outh), e(ast), w(est)</em> -- move in direction</li>
+							<li><em>p</em> -- pick up item</li>
+							<li><em>i</em> -- show inventory</li>
+							<li><em>f</em> -- fight</li>
+							<li><em>u</em> -- use spell</li>
+							<!--<li>k -- use key</li>-->
+						</ul>
+					</div>
+				</div>
 			</div>
-		</div>
-		
-		<div id="placeholder">
+			
+			<div id="placeholder">
+				
+			</div>
+			<form onsubmit="return false;" accept-charset="utf-8">
+				<input type="text" name="" value="" placeholder="What do you want to do?" id="user-input">
+			</form>
 			
 		</div>
-		<form onsubmit="return false;" accept-charset="utf-8">
-			<input type="text" name="" value="" placeholder="What do you want to do?" autofocus="autofocus" id="user-input">
-		</form>
-		<div id ="help">
-			<ul>
-				<li>-h -- hide help section</li>
-				<li>n(orth), s(outh), e(ast), w(est) -- move in direction</li>
-				<li>p -- pick up item</li>
-				<li>i -- show inventory</li>
-				<li>f -- fight</li>
-				<li>u -- use spell</li>
-				<!--<li>k -- use key</li>-->
-			</ul>
-		</div>
+		
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 		<script src="js/application.js" type="text/javascript" charset="utf-8" defer></script>
 	</body>
