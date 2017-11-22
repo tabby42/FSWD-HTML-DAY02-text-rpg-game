@@ -116,7 +116,7 @@ $j(document).ready(function() {
                     this.currentRoom = rooms[availableRooms[i][0] - 1];
                     //console.log(this.currentRoom);
                     isAccessible = true;
-                    insertMessage("There is a door. It opens. You enter Room" + availableRooms[i][0] + ".");
+                    insertMessage("There is a door. It opens. You enter Room" + availableRooms[i][0] + ".<br>");
                     //call describeCurrentRoom
                     this.describeCurrentRoom();
                 }
@@ -124,7 +124,7 @@ $j(document).ready(function() {
             if (!isAccessible) {
                 this.strength --;
                 this.hunger ++;
-                insertMessage("There is no door in this direction.")
+                insertMessage("There is no door in this direction.<br>")
             }
             this.adjustStatus();
         },
@@ -133,7 +133,7 @@ $j(document).ready(function() {
             hunger.empty().append(this.hunger);
             if (this.hunger > 10) {
                 alert("You die from hunger! Game over!");
-                insertMessage("Reload page to start over.");
+                insertMessage("Reload page to start over.<br>");
                  $j("form").hide();
             }
             else if (this.hunger == 5) {
@@ -141,20 +141,41 @@ $j(document).ready(function() {
             }
             if (this.strength <= 0) {
                 alert("You die from exhaustion! Game over!");
-                insertMessage("Reload page to start over.");
+                insertMessage("Reload page to start over.<br>");
                 $j("form").hide();
             }
         },
         describeCurrentRoom: function () {
             if (this.currentRoom.items.length > 0) {
                 for (var i = 0; i < this.currentRoom.items.length; i++) {
-                    appendMessage(" There is a " + this.currentRoom.items[i] + ".");
+                    appendMessage("There is a " + this.currentRoom.items[i] + ".<br>");
                 }
             }
             if (this.currentRoom.monsters.length > 0) {
                 for (var i = 0; i < this.currentRoom.monsters.length; i++) {
-                    appendMessage(" There is a " + this.currentRoom.monsters[i] + ".");
+                    appendMessage("There is a " + this.currentRoom.monsters[i] + ".<br>");
                 }
+            }
+        },
+        pickUp: function (item) {
+            //check if current room has item
+            //yes -> move item to inventory
+            //not handled yet --> more than one item per room
+            if (this.currentRoom.items.length > 0) {
+                for (var i = 0; i < this.currentRoom.items.length; i++) {
+                    var temp = this.currentRoom.items[i];
+                    this.currentRoom.items.pop();
+                    //console.log(this.currentRoom.items);
+                    this.inventory.push(temp);
+                    if (temp == "sword") {
+                        this.strength += 20;
+                    }
+                    appendMessage("<p>You picked up a " + temp + ".</p>");
+                }
+                //update status
+                this.adjustStatus();
+            } else {
+                appendMessage("<p>There is no item to pick up here.</pr>");
             }
         }
         //showInventory
@@ -194,10 +215,13 @@ $j(document).ready(function() {
         else if (input == "n" || input == "s" || input=="w" || input =="e") {
             player.goToRoom(input);
         }
+        else if (input == "p") {
+            player.pickUp(input);
+        }
         else {
             insertMessage("I don't know what you mean by " + input + ".");
         }
-
+        //empty text input field
         $j("#user-input").val("");
     });
 
