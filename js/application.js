@@ -215,7 +215,7 @@ $j(document).ready(function() {
             if (this.currentRoom.monsters.length > 0) {
                 for (var i = 0; i < this.currentRoom.monsters.length; i++) {
                     if (this.currentRoom.monsters[i] == "king") {
-                        this.strength -= 40;
+                        this.strength -= 30;
                         this.adjustStatus();
                         if (this.strength > 0) {
                             this.kingIsDead = true;
@@ -293,6 +293,9 @@ $j(document).ready(function() {
         }
         else if (input == "f") {
             player.fight();
+        }
+        else if (input == "u") {
+            player.useSpell();
         }
         else {
             insertMessage("I don't know what you mean by " + input + ".");
