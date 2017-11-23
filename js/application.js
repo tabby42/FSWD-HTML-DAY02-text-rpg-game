@@ -197,7 +197,8 @@ $j(document).ready(function() {
                     else if (temp == "dragon" && this.kingIsDead == false && this.ringIsThere == false) {
                         appendMessage("You have to kill the king first in order to pick up the dragon!");
                     }
-                    else if (temp == "dragon" && this.kingIsDead == true && this.ringIsThere == false) {
+                    else if ((temp == "dragon" && this.kingIsDead == true && this.ringIsThere == false) ||
+                               (temp == "dragon" && this.kingIsDead == true && this.ringIsThere == true && this.usedMagic == false) ) {
                         appendMessage("You have to use magic to free the dragon!");
                     }
                     else if (temp == "dragon" && this.kingIsDead == true && this.ringIsThere == true && this.usedMagic == true) {
@@ -209,7 +210,7 @@ $j(document).ready(function() {
                 //update status
                 this.adjustStatus();
             } else {
-                appendMessage("<p>There is no item to pick up here.</pr>");
+                appendMessage("<p>There is no item to pick up here.</br>");
             }
         },
         showInventory: function () {
@@ -263,7 +264,6 @@ $j(document).ready(function() {
             }
             console.log(this.ringIsThere);
             console.log(this.usedMagic);
-
          }
          //TODO: useKey
      }
@@ -293,7 +293,7 @@ $j(document).ready(function() {
         else if (input == "-h") {
             help.hide();
         }
-        else if (input == "n" || input == "s" || input=="w" || input =="e") {
+        else if (input == "n" || input == "s" || input =="w" || input == "e") {
             player.goToRoom(input);
         }
         else if (input == "p") {
