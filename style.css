@@ -29,7 +29,7 @@ h1 {
 
 #msg-board div  p.welcome:first-letter {
 	font-family: 'Fredericka the Great', cursive;
-	font-size:  30px;
+	/*font-size:  30px;*/
 }
 
 #hunger,
