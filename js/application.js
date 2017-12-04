@@ -102,7 +102,7 @@ $j(document).ready(function() {
     //object for player
     var player = {
         inventory: [],
-        strength: 15,
+        strength: 10,
         hunger: 0,
         currentRoom: room2,
         kingIsDead: false,
@@ -113,6 +113,7 @@ $j(document).ready(function() {
             var availableRooms = this.currentRoom.availableRooms;
             var isAccessible  = false;
             for (var i = 0; i < availableRooms.length; i++) {
+            //check if ther is a door in the specified direction
                 if (availableRooms[i][1] == direction) {
                     this.strength --;
                     this.hunger ++;
@@ -132,6 +133,7 @@ $j(document).ready(function() {
             this.adjustStatus();
         },
         adjustStatus: function() {
+            //to be called after every action the user takes
             strength.empty().append(this.strength);
             hunger.empty().append(this.hunger);
             if (this.hunger > 10) {
@@ -162,7 +164,7 @@ $j(document).ready(function() {
         },
         pickUp: function (item) {
             //check if current room has item
-            //yes -> move item to inventory
+            //yes -> move item to inventory and remove from room
             //not handled yet --> more than one item per room
             if (this.currentRoom.items.length > 0) {
                 for (var i = 0; i < this.currentRoom.items.length; i++) {
@@ -188,7 +190,7 @@ $j(document).ready(function() {
                         this.inventory.push(temp);
                         this.currentRoom.items.pop();
                         this.ringIsThere = true;
-                        console.log(this.ringIsThere);
+                        //console.log(this.ringIsThere);
                         appendMessage("<p>You picked up a " + temp + ".</p>");
                     }
                     else if (temp == "dragon" && this.kingIsDead == false && this.ringIsThere == true) {
@@ -205,7 +207,6 @@ $j(document).ready(function() {
                         insertMessage("You are a hero! You saved the dragon from the Evil King! YOU WON!<br>");
                         $j("form").hide();
                     }
-                    //TODO: handle case when king is dead and ring is there and user tries to pick up dragon without having used the spell 
                 }
                 //update status
                 this.adjustStatus();
@@ -262,10 +263,9 @@ $j(document).ready(function() {
                 this.usedMagic = true;
                 appendMessage("You broke the spell! Now you can save the dragon!");
             }
-            console.log(this.ringIsThere);
-            console.log(this.usedMagic);
+            //console.log(this.ringIsThere);
+            //console.log(this.usedMagic);
          }
-         //TODO: useKey
      }
 
     function insertMessage(message) {
